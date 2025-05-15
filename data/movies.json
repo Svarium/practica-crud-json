@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "title": "Iron Man",
+    "year": 2008,
+    "director": "Jon Favreau",
+    "phase": "Phase One"
+  },
+  {
+    "id": "2",
+    "title": "The Avengers",
+    "year": 2012,
+    "director": "Joss Whedon",
+    "phase": "Phase One"
+  },
+  {
+    "id": "3",
+    "title": "Black Panther",
+    "year": 2018,
+    "director": "Ryan Coogler",
+    "phase": "Phase Three"
+  }
+]
