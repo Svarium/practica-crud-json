@@ -14,7 +14,6 @@ router.get('/', (req, res, next) => {
     }
 })
 
-
 router.get('/:id', getMovieById) // GET one Movie by ID
 router.post('/', ValidateCreateMovie, createMovie) // POST movies listing
 router.put('/:id', ValidateUpdateMovie, updateMovie) // EDIT MOVIE 
