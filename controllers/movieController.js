@@ -25,7 +25,13 @@ const getAllMovies = async(req, res) => {
 //## GET MOVIE BY ID
 const getMovieById = async(req,res) => {
   try {  
-   
+   const movie = await Movie.findById(req.params.id);
+
+   if(!movie){
+    return res.status(404).json({message:'No se encontró ninguna película'})
+   }
+
+   res.json(movie)
     
   } catch (error) {
       console.log(error);
@@ -67,6 +73,34 @@ const updateMovie = async (req,res) => {
 
   try {
 
+    // Validar errores
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array()});
+  }
+
+  const updatedMovie = await Movie.findByIdAndUpdate(
+    req.params.id,
+    {
+      title: req.body.title,
+      year: req.body.year,
+      director: req.body.director,
+      phase: req.body.phase
+    },
+    {
+      new: true , runValidators: true
+    }
+  )
+
+  if(!updatedMovie){
+    return res.status(404).json({Message: "No se encontró la película"})
+  }
+
+  res.status(200).json({
+    message:"Película editada!",
+    data: updatedMovie
+  })
+
   
   } catch (error) {
       console.log(error);
@@ -79,6 +113,16 @@ const updateMovie = async (req,res) => {
 const deleteOneMovie = async (req,res) => {
   try {
     
+    const deletedMovie = await Movie.findByIdAndDelete(req.params.id);
+
+    if(!deletedMovie){
+        return res.status(404).json({message: "No se encontró la película a borrar..."})
+    }
+
+    res.status(200).json({
+      message: "Película eliminada correctamente",
+      data: deletedMovie,
+    })
     
   } catch (error) {
     console.log(error);
@@ -90,13 +134,23 @@ const deleteOneMovie = async (req,res) => {
 //## find movies by filters
 const findMoviesByFilters = async (req,res) => {
   try {
-    
+
+    console.log(req.query);
+
+    const filteredMovies = await Movie.findByFilters(req.query);   
+
+    if(filteredMovies.length === 0){
+      return res.status(404).json({message: "No se encontraron coincidencias"})
+    }
+
+    return res.json(filteredMovies)    
 
   } catch (error) {
     console.log(error);
     res.status(500).json({message:"Error finding movies"})    
   }
 }
+
 
 
 

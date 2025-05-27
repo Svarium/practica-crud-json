@@ -41,6 +41,27 @@ movieSchema.pre('save', function(next){
 });
 
 //aca vamos a hacer luego la logica de los filtros de busqueda
+movieSchema.statics.findByFilters = async function(filters){
+    const query = {};
+
+    if(filters.title){
+        query.title = {$regex: filters.title, $options: 'i'}
+    }
+
+    if(filters.director){
+        query.director = {$regex: filters.director, $options: 'i'}
+    }
+
+    if(filters.year){
+        query.year = parseInt(filters.year)
+    }
+
+    if(filters.phase){
+        query.phase = filters.phase;
+    }
+
+    return this.find(query);
+}
 
 const Movie = mongoose.model('Movie', movieSchema);
 
